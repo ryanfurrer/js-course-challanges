@@ -286,13 +286,13 @@ const specificID = students.find(function (student) {
 
 const averageScore =
 	students.reduce(function (acc, curr) {
-		console.log(`current score: ${curr.score}`);
+		// console.log(`current score: ${curr.score}`);
 		acc += curr.score;
-		console.log(`total: ${acc}`);
+		// console.log(`total: ${acc}`);
 		return acc;
 	}, 0) / students.length;
 
-console.log(`The average score is: ${averageScore}`);
+// console.log(`The average score is: ${averageScore}`);
 // total score should equal 372
 // average equal 74.4
 
@@ -305,6 +305,19 @@ console.log(`The average score is: ${averageScore}`);
 //    math: 3
 //    }
 // 2. assign to survey and log
+
+const survey = students.reduce(function (survey, student) {
+	const favoriteSubject = student.favoriteSubject;
+
+	if (survey[favoriteSubject]) {
+		survey[favoriteSubject] = survey[favoriteSubject] + 1;
+	} else {
+		survey[favoriteSubject] = 1;
+	}
+	return survey;
+}, {});
+
+console.log(survey);
 
 // ## Notes
 //unshift: adds to the beginning of the array
