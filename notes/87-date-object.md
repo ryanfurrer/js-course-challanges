@@ -1,4 +1,4 @@
-# Date
+# 87. Date Object
 
 Similar to `Math`, `Date` is a global object.
 
