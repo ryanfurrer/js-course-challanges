@@ -52,7 +52,7 @@ console.log(result); // outputs 5
 
 ## Math.max()
 
-Outputs the largeast number in a given range
+Outputs the largest number in a given range
 
 ```js
 const result = Math.max(5, 10, 15, 20);
