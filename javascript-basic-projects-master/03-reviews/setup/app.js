@@ -30,29 +30,67 @@ const reviews = [
 	},
 ];
 
-let authorImg = document.querySelector('#person-img');
-let author = document.querySelector('#author');
-let job = document.querySelector('#job');
-let info = document.querySelector('#info');
-
+// Select HTML elements
+const authorImg = document.querySelector('#person-img');
+const author = document.querySelector('#author');
+const job = document.querySelector('#job');
+const info = document.querySelector('#info');
 const btns = document.querySelectorAll('button');
 
+// Set initial review array
+let index = 0;
+
+// Declare variable for global access to random review generation
+let randomindex;
+
+// Generates and returns a random number based on the length of our reviews array.
+function randomIndexGenerator() {
+	randomIndex = Math.floor(Math.random() * reviews.length);
+	return randomIndex;
+}
+
+// This function will update the review on-screen dynamically as the user cycles through them.
+function cycleArray() {
+	authorImg.src = reviews.at(index).img;
+	author.textContent = reviews.at(index).name;
+	job.textContent = reviews.at(index).job;
+	info.textContent = reviews.at(index).text;
+}
+
+// Loads initial array when the page loads, rather than our hard-coded values.
+window.addEventListener('DOMContentLoaded', cycleArray);
+
+// Adds an event listener to any element being grabbed by the btns variable. In this case, any <button> element.
 btns.forEach(function (btn) {
 	btn.addEventListener('click', function (e) {
+		// Grab the list of classes on the clicked item.
 		const actions = e.currentTarget.classList;
 
+		// Checks to seee if the clicked button contains a certain class and then acts differently based on that class.
+
+		// If the btn contains a class of "prev-btn", it will decrease our index, feed that information back to the cycleArray method, and update the review that's on screen.
 		if (actions.contains('prev-btn')) {
-			console.log('previous review');
+			index--;
+			if (index < 0) {
+				index = reviews.length - 1;
+			}
+			cycleArray();
 		}
+
+		// If the btn contains a class of "next-btn", it will increase our index, feed that information back to the cycleArray method, and update the review that's on screen.
 		if (actions.contains('next-btn')) {
-			console.log('next review');
+			index++;
+			if (index > reviews.length - 1) {
+				index = 0;
+			}
+			cycleArray();
 		}
+
+		// If the btn contains a class of "random-btn", it will calls the randomIndexGenerator to generate a random array index, feed that information back to the cycleArray method, and update the review that's on screen.
 		if (actions.contains('random-btn')) {
-			console.log('random review');
+			randomIndexGenerator();
+			index = randomIndex;
+			cycleArray();
 		}
 	});
-
-	authorImg.setAttribute('src', reviews.at(2).img);
 });
-
-// console.log(reviews.at(0));
