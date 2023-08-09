@@ -71,14 +71,23 @@ const menu = [
 		img: './images/item-9.jpeg',
 		desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
 	},
+	{
+		id: 10,
+		title: 'steak dinner',
+		category: 'dinner',
+		price: 39.99,
+		img: './images/item-10.jpeg',
+		desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+	},
 ];
 
 const sectionCenter = document.querySelector('.section-center ');
-const filterBtns = document.querySelectorAll('.filter-btn');
+const btnContainer = document.querySelector('.btn-container');
 
 // load items
 window.addEventListener('DOMContentLoaded', function () {
 	displayMenuItems(menu);
+	displayMenuBtns();
 });
 
 function displayMenuItems(menuItems) {
@@ -101,19 +110,46 @@ function displayMenuItems(menuItems) {
 	sectionCenter.innerHTML = displayMenu;
 }
 
-// filter items
-filterBtns.forEach(function (btn) {
-	btn.addEventListener('click', function (e) {
-		const category = e.currentTarget.dataset.id;
-		const menuCategory = menu.filter(function (menuItem) {
-			if (menuItem.category === category) {
-				return menuItem;
+function displayMenuBtns() {
+	// get only unique categories of items
+	const categories = menu.reduce(
+		function (values, item) {
+			// add category to categories array if the category is not already in the array
+			if (!values.includes(item.category)) {
+				values.push(item.category);
+			}
+			return values;
+		},
+		['all']
+	);
+	const categoryBtns = categories
+		.map(function (category) {
+			return `<button 
+							type="button" 
+							class="filter-btn" 
+							data-id="${category}">
+								${category}
+						</button>`;
+		})
+		.join('');
+	btnContainer.innerHTML = categoryBtns;
+
+	const filterBtns = document.querySelectorAll('.filter-btn');
+
+	// filter items
+	filterBtns.forEach(function (btn) {
+		btn.addEventListener('click', function (e) {
+			const category = e.currentTarget.dataset.id;
+			const menuCategory = menu.filter(function (menuItem) {
+				if (menuItem.category === category) {
+					return menuItem;
+				}
+			});
+			if (category === 'all') {
+				displayMenuItems(menu);
+			} else {
+				displayMenuItems(menuCategory);
 			}
 		});
-		if (category === 'all') {
-			displayMenuItems(menu);
-		} else {
-			displayMenuItems(menuCategory);
-		}
 	});
-});
+}
